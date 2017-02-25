@@ -26,20 +26,6 @@
          :initarg :text
          :initform "")))
 
-(defun hashtag-p (token)
-  (equal (subseq token 0 1) "#"))
-
-(defun dehash (token)
-  (intern (subseq token 1)))
-
-(defun hashtags-from-entry (entry)
-  (hashtags-from-text (entry-text entry)))
-
-(defun hashtags-from-text (text)
-  (let ((tokens (split-sequence #\Space text)))
-    (mapcar #'dehash
-            (remove-if-not #'hashtag-p tokens))))
-
 (defun plist-from-entry (entry)
   (list :timestamp (entry-timestamp entry)
         :text (entry-text entry)))
@@ -80,27 +66,43 @@
 (defun add-entry (text &optional (timestamp (get-universal-time)))
   (setf (gethash timestamp *entries*) text))
 
+(defun list-entries ()
+  (maphash (lambda (key value)
+             (format t "~a | ~a~%" key value))
+           *entries*))
+
 (defun past (&optional entry)
   (cond ((null entry)
-         (maphash #'(lambda (k v)
-                      (format t "~a | ~a~%" k v))
-                  *entries*))
+         (list-entries))
         (t
          (add-entry (getf entry :timestamp)
                     (getf entry :text)))))
 
-;; Either see the state of the present, or create an entry to be placed in
-;; the immediate past
 (defun present (&optional text)
+  "Either see the state of the present, or create an entry to be placed in
+   the immediate past"
   (cond ((null text) "Not implemented")
-        (t (add-entry text))))
+        (t (add-entry text)
+           (save-entries))))
 
-(defun list-entries ()
-  (maphash (lambda (key value)
-             (write (list key value)))
-           *entries*))
-
-;; Either upcoming events or create a future event
 (defun future (&optional event)
+  "Either upcoming events or create a future event"
   (cond ((null event) (future-events))
         (t "Not implemented")))
+
+
+;;; Entry processing
+
+(defun hashtag-p (token)
+  (equal (subseq token 0 1) "#"))
+
+(defun dehash (token)
+  (intern (subseq token 1)))
+
+(defun hashtags-from-entry (entry)
+  (hashtags-from-text (entry-text entry)))
+
+(defun hashtags-from-text (text)
+  (let ((tokens (split-sequence #\Space text)))
+    (mapcar #'dehash
+            (remove-if-not #'hashtag-p tokens))))
