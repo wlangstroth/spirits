@@ -30,10 +30,13 @@
   (equal (subseq token 0 1) "#"))
 
 (defun dehash (token)
-  (subseq token 1))
+  (intern (subseq token 1)))
 
 (defun hashtags-from-entry (entry)
-  (let ((tokens (split-sequence #\Space (entry-text entry))))
+  (hashtags-from-text (entry-text entry)))
+
+(defun hashtags-from-text (text)
+  (let ((tokens (split-sequence #\Space text)))
     (mapcar #'dehash
             (remove-if-not #'hashtag-p tokens))))
 
