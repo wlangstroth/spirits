@@ -61,8 +61,9 @@
 (defun entry-hash-from-list (entry-list)
   (let ((entries (make-hash-table)))
     (mapcar
-     #'(lambda (e)
-         (setf (gethash (entry-timestamp e) entries) (entry-text e)))
+     #'(lambda (plist)
+         (let ((e (entry-from-plist plist)))
+           (setf (gethash (entry-timestamp e) entries) (entry-text e))))
      entry-list)
     entries))
 
