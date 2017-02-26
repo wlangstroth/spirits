@@ -5,7 +5,6 @@
   :author "Will Langstroth <will@langstroth.com>"
   :license "MIT"
   :serial t
-  :depends-on (#:cl-utilities
-               #:cl-json)
+  :depends-on (#:cl-utilities)
   :components ((:file "package")
                (:file "spirits")))
