@@ -69,8 +69,8 @@
   lines)
 
 (defun present (&optional text)
-  "Either see the state of the present (todo/shopping lists), or create an
-   entry to be placed in the immediate past"
+  "Either see the state of the present (todo/shopping lists, trades in play),
+  or create an entry to be placed in the immediate past"
   (cond ((null text) "Not implemented")
         (t (add-entry text)
            (save-entries))))
