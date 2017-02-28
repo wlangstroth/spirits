@@ -43,3 +43,10 @@ building. Manual "rule" coding for now.
 "Need diapers"
 
 "Got diapers, tortilla chips and salsa" takes those off of the need list
+
+## Caveat Lector
+
+This is not serious business. I'm storing all the entries and events in a big
+list, because there's little reason not to. If I were magically able to enter 50
+of these a day, I'd still have fewer than 200,000 entries 10 years from
+now.

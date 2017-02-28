@@ -55,14 +55,11 @@
     (setf *entries* (mapcar #'entry-from-plist plists))
     (length *entries*)))
 
-(defun add-entry (text &optional (timestamp (get-universal-time)))
-  (push (make-instance 'entry :timestamp timestamp :text text) *entries*))
-
 (defun past (&optional entry)
   (cond ((null entry)
          (mapcar #'entry-line *entries*)
          (length *entries*))
-        (t "Not implemented")))
+        (t (append *entries* `(,entry)))))
 
 (defun last-n (&optional (lines 1))
   (mapcar #'entry-line (subseq *entries* 0 lines))
@@ -70,9 +67,14 @@
 
 (defun present (&optional text)
   "Either see the state of the present (todo/shopping lists, trades in play),
-  or create an entry to be placed in the immediate past"
+or create an entry to be placed in the immediate past"
   (cond ((null text) "Not implemented")
-        (t (add-entry text)
+        (t
+         (push
+          (make-instance 'entry
+                         :text text
+                         :timestamp (get-universal-time))
+          *entries*)
            (save-entries))))
 
 (defun future (&optional event)
@@ -95,3 +97,13 @@
   (let ((tokens (split-sequence #\Space text)))
     (mapcar #'dehash
             (remove-if-not #'hashtag-p tokens))))
+
+(defun sort-entries ()
+  (sort *entries*
+        #'(lambda (e f)
+            (> (entry-timestamp e) (entry-timestamp f)))))
+
+(defun entries-with-text (query)
+  (loop for e in *entries*
+     if (search query (entry-text e))
+     collect e))
