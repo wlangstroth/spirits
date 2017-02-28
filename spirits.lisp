@@ -68,7 +68,7 @@
 (defun present (&optional text)
   "Either see the state of the present (todo/shopping lists, trades in play),
 or create an entry to be placed in the immediate past"
-  (cond ((null text) "Not implemented")
+  (cond ((null text) (trading:trade-status))
         (t
          (push
           (make-instance 'entry
