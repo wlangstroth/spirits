@@ -91,10 +91,10 @@ or create an entry to be placed in the immediate past"
   word-list)
 
 (defparameter *stopwords*
-  '("really" "very" "the" "a"))
+  '("really" "very" "a"))
 
 (defun in-stopwords-p (token)
-  (member token *stopwords*))
+  (member token *stopwords* :test #'string=))
 
 (defparameter meaning-symbols
   '(:need "Ran out of something"
