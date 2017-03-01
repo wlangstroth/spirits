@@ -14,31 +14,30 @@ timestamp, future events are events with a flexible (uncertain) time.
 ```
 (past) => all the past events
 
-(past (:property "blah")) => search some property of a past event
+(past "last time x happened") => search for an event
 
-(present) => todo, inventory, etc.
+(present) => todo, inventory, open trades
 
 (present "Lorem ipsum") => add an entry, timestamped to now
 
 (future) => events to come, todos with deadlines
 
-(future "Lorem ipsum") => add an upcoming event
+(future "Event in two weeks") => add an entry that implies an upcoming event
 ```
 
 Each time an action is taken, check future events for expiration.
 
-## Format and tags
+## Hashtags
 
-Any tags should be hashtags. When an entry is created, it should be parsed into
-keywords and applied to a hash table (as index) anyway. That way, keyword search
-is fairly easy. Hashtags should be a way of providing context where none exists.
+Hashtags should provide context where none exists. Might make for more
+convenient searches in some cases.
 
 ## Natural language queries
 
 "Last time I bought diapers" should be straightforward.
 
-Stopword removal, down-casing, stemming and synonym replacement for index
-building. Manual "rule" coding for now.
+Down-casing and synonym replacement for index building. Manual "rule" coding for
+now. Stemming is a dead end for now.
 
 "Need diapers"
 

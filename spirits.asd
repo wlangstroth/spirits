@@ -9,4 +9,6 @@
                #:passage
                #:trading)
   :components ((:file "package")
+               (:file "entries")
+               (:file "events")
                (:file "spirits")))

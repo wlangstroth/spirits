@@ -8,34 +8,9 @@
 
 (in-package #:spirits)
 
-;; entries can be stored as a hash table, using entry-timestamp as the key
-(defvar *entries* nil
-  "Entries are timestamped text notes")
-
-(defvar *events* nil
-  "Events are time-dependent instances parsed from entries")
-
-(defclass entry ()
-  ((timestamp
-    :accessor entry-timestamp
-    :initarg :timestamp
-    :initform (get-universal-time))
-   (text
-    :accessor entry-text
-    :initarg :text
-    :initform "")))
-
 (defun plist-from-entry (entry)
   (list :timestamp (entry-timestamp entry)
         :text (entry-text entry)))
-
-(defun save-entries ()
-  (with-open-file (out "entries.db"
-                   :direction :output
-                   :if-exists :supersede)
-    (with-standard-io-syntax
-      (print (mapcar #'plist-from-entry *entries*) out)))
-  (length *entries*))
 
 (defun entry-from-plist (entry-plist)
   (make-instance 'entry
@@ -93,6 +68,9 @@ or create an entry to be placed in the immediate past"
 (defun hashtags-from-entry (entry)
   (hashtags-from-text (entry-text entry)))
 
+(defun entry-tokens (entry)
+  (split-sequence #\Space (entry-text entry)))
+
 (defun hashtags-from-text (text)
   (let ((tokens (split-sequence #\Space text)))
     (mapcar #'dehash
@@ -107,3 +85,19 @@ or create an entry to be placed in the immediate past"
   (loop for e in *entries*
      if (search query (entry-text e))
      collect e))
+
+(defun substitute-synonym (word-list)
+  "Use a list of canonical words that should be used in place of their synonyms"
+  word-list)
+
+(defparameter *stopwords*
+  '("really" "very" "the" "a"))
+
+(defun in-stopwords-p (token)
+  (member token *stopwords*))
+
+(defparameter meaning-symbols
+  '(:need "Ran out of something"
+    :none "Plain event"))
+
+(defparameter *synonyms* nil)
