@@ -133,7 +133,12 @@ or create an entry to be placed in the immediate past"
 
 (defparameter *needed* nil)
 
-(defun split-clauses (text) text)
+(defun trim-spaces (text)
+  (string-trim '(#\space) text))
+
+(defun split-clauses (text)
+  (mapcar #'trim-spaces
+          (split-sequence #\. text :remove-empty-subseqs t)))
 
 (defun tokenize-clause (clause) clause)
 
