@@ -8,6 +8,8 @@
 
 (in-package #:spirits)
 
+(load-entries)
+
 (defun plist-from-entry (entry)
   (list :timestamp (entry-timestamp entry)
         :text (entry-text entry)))
@@ -86,18 +88,57 @@ or create an entry to be placed in the immediate past"
      if (search query (entry-text e))
      collect e))
 
-(defun substitute-synonym (word-list)
-  "Use a list of canonical words that should be used in place of their synonyms"
-  word-list)
-
 (defparameter *stopwords*
   '("really" "very" "a"))
 
 (defun in-stopwords-p (token)
   (member token *stopwords* :test #'string=))
 
-(defparameter meaning-symbols
-  '(:need "Ran out of something"
-    :none "Plain event"))
+(defclass item ()
+  ((name
+    :initarg :name
+    :initform ""
+    :accessor item-name)
+   (state
+    :initarg :state
+    :initform :needed
+    :accessor item-state)
+   (category
+    :initarg :category
+    :initform :grocery
+    :accessor item-category)
+
+   (quantity
+    :initarg :quantity
+    :initform 0
+    :accessor item-quantity)))
+
+(defclass entry ()
+  ((timestamp
+    :accessor entry-timestamp
+    :initarg :timestamp
+    :initform (get-universal-time))
+   (text
+    :accessor entry-text
+    :initarg :text
+    :initform "")))
+
+
+(defparameter *tag-meanings*
+  '(:need "Ran out of an item"
+    :bought "Purchased an item or all the items in the list"
+    :ate "Used up items in a standard recipe"))
+
+(defparameter *inventory* nil)
+
+(defparameter *needed* nil)
+
+(defun split-clauses (text) text)
+
+(defun tokenize-clause (clause) clause)
+
+(defun scan-tokens (tokens*) tokens*)
+
+(defun parse-entry-tokens (tokens*) tokens*)
 
 (defparameter *synonyms* nil)
