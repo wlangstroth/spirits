@@ -84,7 +84,7 @@
     :ate "Used up items in a standard recipe"))
 
 (defun trim-spaces (text)
-  "Trims the spaces left from splitting up clauses at periods"
+  "Trims the spaces leppft from splitting up clauses at periods"
   (string-left-trim '(#\space) text))
 
 (defun split-clauses (text)
@@ -103,3 +103,7 @@
 (defparameter *synonyms* nil)
 
 (load-entries)
+
+(defun convert-timestamp (entry)
+  (let ((stamp (entry-timestamp entry)))
+    (setf stamp (chronograph:iso-from-universal stamp))))

@@ -10,8 +10,10 @@
         (t (append *entries* `(,entry)))))
 
 (defun last-n (&optional (lines 1))
-  (mapcar #'entry-line (subseq *entries* 0 lines))
-  lines)
+  (subseq *entries* 0 lines))
+
+(defun show-last-n (lines)
+  (mapcar #'entry-line (last-n lines)))
 
 (defun present (&optional text)
   "Either see the state of the present (todo/shopping lists, trades in play),

@@ -11,4 +11,5 @@
   :components ((:file "package")
                (:file "entries")
                (:file "events")
+               (:file "items")
                (:file "spirits")))
