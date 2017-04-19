@@ -2,7 +2,6 @@
 
 (in-package #:spirits)
 
-
 (defun past (&optional entry)
   (cond ((null entry)
          (mapcar #'entry-line *entries*)
