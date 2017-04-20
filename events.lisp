@@ -19,7 +19,7 @@
     :accessor event-timestamp)
    (subject
     :initarg :subject
-    :initform ""
+    :initform "Will"
     :accessor event-subject)
    (predicate
     :initarg :predicate
@@ -28,23 +28,29 @@
    (object
     :initarg :object
     :initform ""
-    :accessor event-object)))
+    :accessor event-object)
+   (context
+    :initarg :context
+    :initform ()
+    :accessor event-context)))
 
-(defun insert-event (timestamp subject predicate object)
+(defun insert-event (timestamp subject predicate object context)
   (push
    (make-instance 'event
                   :timestamp timestamp
                   :subject subject
                   :predicate predicate
-                  :object object)
+                  :object object
+                  :context context)
    *events*))
 
-(defun add-event (subject predicate &optional (object ""))
+(defun add-event (subject predicate &optional (object "") (context ()))
   (let ((new-event
          (make-instance 'event
                   :subject subject
                   :predicate predicate
-                  :object object)))
+                  :object object
+                  :context context)))
     (push new-event *events*)
     (plist-from-event new-event)))
 
@@ -62,7 +68,8 @@
                  :timestamp (getf event-plist :timestamp)
                  :subject (getf event-plist :subject)
                  :predicate (getf event-plist :predicate)
-                 :object (getf event-plist :object)))
+                 :object (getf event-plist :object)
+                 :context (getf event-plist :context)))
 
 (defun load-events ()
   (let ((plists nil))
@@ -79,3 +86,5 @@
     (with-standard-io-syntax
       (print (mapcar #'plist-from-event *events*) out)))
   (format t "Saved ~d events" (length *events*)))
+
+(load-events)
