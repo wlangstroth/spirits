@@ -61,7 +61,8 @@
   (list :timestamp (event-timestamp event)
         :subject (event-subject event)
         :predicate (event-predicate event)
-        :object (event-object event)))
+        :object (event-object event)
+        :context (event-context event)))
 
 (defun event-from-plist (event-plist)
   (make-instance 'event
